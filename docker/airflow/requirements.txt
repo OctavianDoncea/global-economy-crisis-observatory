@@ -1,0 +1,10 @@
+httpx
+pandas
+pydantic
+pydantic-settings
+tenacity
+loguru
+python-dotenv
+yfinance
+pandera
+click
