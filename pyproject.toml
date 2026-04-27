@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "global-economy-crisis-observatory"
+description = "End-to-end data platform for global macroeconomic crisis detection"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "httpx",
+    "pandas",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "pydantic",
+    "pydantic-settings",
+    "tenacity",
+    "loguru",
+    "python-dotenv",
+    "yfinance",
+    "pandera[pandas]",
+    "click",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "ruff",
+    "black",
+    "mypy",
+    "pre-commit",
+    "responses",
+    "freezegun",
+]
+
+[project.scripts]
+observatory = "src.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+# ─── Ruff ──────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["airflow/logs", "dbt/target", "dbt/dbt_packages"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",   # pycodestyle / pyflakes
+    "I",             # isort
+    "B",             # bugbear
+    "UP",            # pyupgrade
+    "C4",            # comprehensions
+    "SIM",           # simplify
+    "PL",            # pylint subset
+    "RUF",           # ruff-native
+]
+ignore = ["PLR0913", "PLR2004"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["PLR2004", "S101"]
+
+#Black
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+#Pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --tb=short"
+markers = [
+    "integration: tests that hit real services (skipped in CI by default)",
+    "slow: tests that take longer than 1s",
+]
+
+#Mypy
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
