@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Lnading zone for ingested data: owned by Airflow ingestion jobs."
+    database: observatory
+    schema: raw
+    tables:
+      - name: fred_observations
+        description: "FRED time-series observations."
+        columns:
+          - name: series_id
+            tests: [not_null]
+          - name: obs_date
+            tests: [not_null]
+
+      - name: worldbank_indicators
+        description: "World Bank annual indicators."
+        columns:
+          - name: country_iso
+            tests: [not_null]
+          - name: indicator_code
+            tests: [not_null]
+          - name: obs_year
+            tests: [not_null]
+
+      - name: market_prices
+        description: "Daily OHLCV market data."
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: obs_date
+            tests: [not_null]
+
+      - name: news_articles
+        description: "GDELT news articles for sentiment scoring."
+        columns:
+          - name: article_id
+            tests: [not_null, unique]
+
+      - name: ingestion_runs
+        description: "Audit log for every ingestion job."
