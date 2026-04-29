@@ -29,7 +29,7 @@ def test_fetch_returns_dataframe_with_required_columns():
     assert set(df.columns) >= expected
 
 @responses.activate
-def test_url_hashing_is_stable_accross_calls():
+def test_url_hashing_is_stable_across_calls():
     responses.add(responses.GET, GdeltClient.BASE_URL, json={'articles': [{'url': 'https://example.com/x', 'seendate': '20240101T000000Z'}]}, status=200)
     responses.add(responses.GET, GdeltClient.BASE_URL, json={"articles": [{"url": "https://example.com/x", "seendate": "20240101T000000Z"}]}, status=200)
 
